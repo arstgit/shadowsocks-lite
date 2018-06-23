@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+let path = require('path');
+let fs = require('fs');
+let src = path.join(path.dirname(fs.realpathSync(__filename)), '../src');
+
+require(src + '/local').main()

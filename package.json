@@ -1,0 +1,38 @@
+{
+  "name": "shadowsocks-lite",
+  "version": "1.0.4",
+  "description": "A socks5 proxy helper",
+  "main": "src/local.js",
+  "bin": {
+    "ssllocal": "bin/ssllocal",
+    "sslserver": "bin/sslserver"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derekchuank/shadowsocks-lite.git"
+  },
+  "keywords": [
+    "shadowsocks",
+    "socks5",
+    "proxy"
+  ],
+  "author": "derekchuank",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derekchuank/shadowsocks-lite/issues"
+  },
+  "homepage": "https://github.com/derekchuank/shadowsocks-lite#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "require-dir-lite": "^1.0.0"
+  }
+}
