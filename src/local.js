@@ -35,6 +35,23 @@ exports.main = function() {
     true
   );
 
+  const getServer = (() => {
+    let i = 0;
+    if (
+      Array.isArray(serverAddr) &&
+      Array.isArray(serverPort) &&
+      serverAddr.length === serverPort.length
+    ) {
+      let cnt = serverAddr.length;
+      return () => {
+        i = ++i % cnt;
+        return [serverAddr[i], serverPort[i]];
+      };
+    } else {
+      return () => [serverAddr, serverPort];
+    }
+  })();
+
   const server = net.createServer(function(connection) {
     let encryptor = new Encryptor(key, method);
     let stage = 0;
@@ -111,11 +128,8 @@ exports.main = function() {
 
           connection.write("05000001000000000001", "hex");
 
-          remote = net.createConnection(
-            serverPort,
-            serverAddr,
-            () => (stage = 4)
-          );
+          let [aServer, aPort] = getServer();
+          remote = net.createConnection(aPort, aServer, () => (stage = 4));
 
           remote.setNoDelay(true);
 
