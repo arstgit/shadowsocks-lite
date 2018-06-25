@@ -4,6 +4,7 @@ const udpRelay = require("./udprelay");
 const utils = require("./utils");
 const inet = require("./inet");
 const { Encryptor } = require("./encrypt");
+const { bestIp, getPing } = require("./ips");
 
 const timeout = 600000;
 const method = "aes-256-cfb";
@@ -37,18 +38,13 @@ exports.main = function() {
 
   const getServer = (() => {
     let i = 0;
-    if (
-      Array.isArray(serverAddr) &&
-      Array.isArray(serverPort) &&
-      serverAddr.length === serverPort.length
-    ) {
-      let cnt = serverAddr.length;
+    if (Array.isArray(serverAddr)) {
+      getPing(serverAddr);
       return () => {
-        i = ++i % cnt;
-        return [serverAddr[i], serverPort[i]];
+        return bestIp() || serverAddr[0];
       };
     } else {
-      return () => [serverAddr, serverPort];
+      return () => serverAddr;
     }
   })();
 
@@ -128,8 +124,11 @@ exports.main = function() {
 
           connection.write("05000001000000000001", "hex");
 
-          let [aServer, aPort] = getServer();
-          remote = net.createConnection(aPort, aServer, () => (stage = 4));
+          remote = net.createConnection(
+            serverPort,
+            getServer(),
+            () => (stage = 4)
+          );
 
           remote.setNoDelay(true);
 
@@ -281,15 +280,8 @@ exports.main = function() {
 
   server.on("error", e => process.stdout.on("drain", () => process.exit(1)));
 
-  utils.intervalInfo(
-    () => {
-      server.getConnections((e, cnt) => {
-        utils.info(`concurrent connections: ${cnt}`);
-      });
-    },
-    () => {
-      utils.info(`--> ${(inBytesCnt / (5 * 1024)).toFixed(2)} KB/s`);
-      inBytesCnt = 0;
-    }
-  );
+  utils.intervalInfo(() => {
+    utils.info(`--> ${(inBytesCnt / (5 * 1024)).toFixed(2)} KB/s`);
+    inBytesCnt = 0;
+  });
 };
