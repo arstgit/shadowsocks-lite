@@ -1,6 +1,6 @@
 {
   "name": "shadowsocks-lite",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A socks5 proxy helper",
   "main": "src/local.js",
   "bin": {
