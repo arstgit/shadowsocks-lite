@@ -55,7 +55,7 @@ U.loadConfig = function(isServer = false) {
   if (!fs.existsSync(configPath)) {
     configPath = path.resolve(__dirname, "config.json");
     if (!fs.existsSync(configPath)) {
-      configPath = path.resolve(__dirname, "../../config.json");
+      configPath = path.resolve("/etc/shadowsocks-lite/config.json");
       if (!fs.existsSync(configPath)) {
         configPath = null;
       }
@@ -78,9 +78,6 @@ U.loadConfig = function(isServer = false) {
   for (let k in configFromArgs) {
     const v = configFromArgs[k];
     config[k] = v;
-  }
-  if (config.verbose) {
-    U.config(U.INFO);
   }
 
   if (

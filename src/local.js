@@ -4,7 +4,7 @@ const udpRelay = require("./udprelay");
 const utils = require("./utils");
 const inet = require("./inet");
 const { Encryptor } = require("./encrypt");
-const { bestIp, getPing } = require("./ips");
+const { getServer, getPing } = require("./ips");
 
 const timeout = 600000;
 const method = "aes-256-cfb";
@@ -25,6 +25,8 @@ exports.main = function() {
   const key = config.password;
   const local_address = config.local_address;
 
+  getPing(serverAddr);
+
   const udpServer = udpRelay.createServer(
     local_address,
     port,
@@ -35,18 +37,6 @@ exports.main = function() {
     timeout,
     true
   );
-
-  const getServer = (() => {
-    let i = 0;
-    if (Array.isArray(serverAddr)) {
-      getPing(serverAddr);
-      return () => {
-        return bestIp() || serverAddr[0];
-      };
-    } else {
-      return () => serverAddr;
-    }
-  })();
 
   const server = net.createServer(function(connection) {
     let encryptor = new Encryptor(key, method);

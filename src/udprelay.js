@@ -1,6 +1,7 @@
 const utils = require("./utils");
 const inet = require("./inet");
 const encryptor = require("./encrypt");
+const { getServer } = require("./ips");
 
 const dgram = require("dgram");
 const net = require("net");
@@ -145,7 +146,7 @@ exports.createServer = function(
 
     if (isLocal) {
       sendDataOffset = requestHeaderOffset;
-      [serverAddr, serverPort] = [remoteAddr, remotePort];
+      [serverAddr, serverPort] = [getServer(), remotePort];
     } else {
       sendDataOffset = headerLength;
       [serverAddr, serverPort] = [destAddr, destPort];

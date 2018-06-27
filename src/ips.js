@@ -1,8 +1,9 @@
 const { spawn } = require("child_process");
 const defaultScore = 100000;
 
-const ipsScore = {};
+let rawIps
 let selected;
+const ipsScore = {};
 
 const updateRes = function() {
   for (let ip in ipsScore) {
@@ -19,6 +20,7 @@ const refreshScore = function() {
 };
 
 const getPing = function(ips) {
+  rawIps = ips = Array.isArray(ips) ? ips : [ips]
   for (let ip of ips) {
     const ping = spawn("ping", [ip, "-i", 2]);
 
@@ -48,7 +50,9 @@ const getPing = function(ips) {
   setInterval(refreshScore, 30000);
 };
 
-const bestIp = () => selected;
+const getServer = () => {
+  return selected || rawIps[0]
+}
 
-exports.bestIp = bestIp;
+exports.getServer = getServer;
 exports.getPing = getPing;
