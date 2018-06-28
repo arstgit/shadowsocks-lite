@@ -5,7 +5,7 @@
 
 ## Super simple to use
 
-Socks5 proxy client and server with fewer config params.
+Socks5 proxy client and server.
 
 ## Usage
 
