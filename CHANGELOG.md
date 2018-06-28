@@ -10,3 +10,6 @@
 # 1.0.7
 - Fix udp server address problem
 - Support config path: /etc/shadowsocks-lite/config.json
+
+# 1.0.8
+- Fix udp server port problem

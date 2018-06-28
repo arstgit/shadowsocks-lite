@@ -191,7 +191,9 @@ exports.createServer = function(
           data2.length,
           rinfo.port,
           rinfo.address,
-          (err, bytes) => utils.info("remote to local sent")
+          (e, bytes) => {
+            if (e) utils.error(e)
+          }
         );
       });
 
@@ -210,13 +212,19 @@ exports.createServer = function(
       }
     }
 
+    if (serverPort <=0 || serverPort >= 65536) {
+      utils.error('port number err: ' + serverPort)
+      return
+    }
     return client.send(
       dataToSend,
       0,
       dataToSend.length,
       serverPort,
       serverAddr,
-      (err, bytes) => utils.info("local to remote sent")
+      (e, bytes) => {
+        if (e) utils.error(e)
+      }
     );
   });
 
