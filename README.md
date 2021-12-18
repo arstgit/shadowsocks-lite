@@ -21,18 +21,6 @@ Socks5 proxy client and server.
     }
 ```
 
-Alternatively, you can specify multiple server addresses on client, and we will select the best to use automatically.
-
-```
-    {
-      "server":["my_server_ip1",'my_server_ip2"],
-      "server_port":8388,
-      "local_address": "127.0.0.1",
-      "local_port":1080,
-      "password":"foobar"
-    }
-```
-
 2.  `cd` into the directory of `config.json`.
 
 3.  On your server, run:
